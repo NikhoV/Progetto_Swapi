@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Progetto2.Views.OfflinePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="#0F0F0F">
+
+    <Page.Resources>
+        <!-- Template Films -->
+        <DataTemplate x:Key="TemplateFilms">
+            <StackPanel Padding="8" Spacing="4">
+                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" Foreground="#FFE81F"/>
+                <TextBlock Text="{Binding Director}" FontSize="13" Foreground="#CCCCCC"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Template Personaggi -->
+        <DataTemplate x:Key="TemplatePersonaggi">
+            <StackPanel Padding="8" Spacing="4">
+                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#FFE81F"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="{Binding Gender}" FontSize="13" Foreground="#CCCCCC"/>
+                    <TextBlock Text="•" FontSize="13" Foreground="#666666"/>
+                    <TextBlock Text="{Binding BirthYear}" FontSize="13" Foreground="#CCCCCC"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Template Pianeti -->
+        <DataTemplate x:Key="TemplatePianeti">
+            <StackPanel Padding="8" Spacing="4">
+                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#FFE81F"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="{Binding Climate}" FontSize="13" Foreground="#CCCCCC"/>
+                    <TextBlock Text="•" FontSize="13" Foreground="#666666"/>
+                    <TextBlock Text="{Binding Population}" FontSize="13" Foreground="#CCCCCC"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Template Navicelle -->
+        <DataTemplate x:Key="TemplateNavicelle">
+            <StackPanel Padding="8" Spacing="4">
+                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#FFE81F"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="{Binding Model}" FontSize="13" Foreground="#CCCCCC"/>
+                    <TextBlock Text="•" FontSize="13" Foreground="#666666"/>
+                    <TextBlock Text="{Binding StarshipClass}" FontSize="13" Foreground="#CCCCCC"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Template Veicoli -->
+        <DataTemplate x:Key="TemplateVeicoli">
+            <StackPanel Padding="8" Spacing="4">
+                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#FFE81F"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="{Binding Model}" FontSize="13" Foreground="#CCCCCC"/>
+                    <TextBlock Text="•" FontSize="13" Foreground="#666666"/>
+                    <TextBlock Text="{Binding VehicleClass}" FontSize="13" Foreground="#CCCCCC"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Template Specie -->
+        <DataTemplate x:Key="TemplateSpecie">
+            <StackPanel Padding="8" Spacing="4">
+                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#FFE81F"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="{Binding Classification}" FontSize="13" Foreground="#CCCCCC"/>
+                    <TextBlock Text="•" FontSize="13" Foreground="#666666"/>
+                    <TextBlock Text="{Binding Language}" FontSize="13" Foreground="#CCCCCC"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Padding="24" RowSpacing="16">
+        <Grid.RowDefinitions>
+            <!-- Row 0: Intestazione Pagina + Esportazione Globale -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 1: Pulsanti Filtro Categorie -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 2: Header della Categoria Selezionata + Esportazione Categoria -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 3: Lista dei Dati Salvati -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 0. INTESTAZIONE E ESPORTAZIONE GLOBALE -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Vertical" Spacing="4">
+                <TextBlock Text="archivio offline holocron" 
+                           FontFamily="ms-appx:///Assets/Fonts/Starjedi.ttf#Star Jedi" 
+                           FontSize="26" Foreground="#FFE81F"/>
+                <TextBlock Text="Consultazione e gestione dei dati memorizzati nel database locale" 
+                           Foreground="#AAAAAA" FontSize="14"/>
+            </StackPanel>
+
+            <!-- Menu Esporta Tutto -->
+            <DropDownButton Grid.Column="1" Content="Esporta Tutto il DB" 
+                            Background="#FFE81F" Foreground="Black" FontWeight="Bold" CornerRadius="8">
+                <DropDownButton.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedRight">
+                        <MenuFlyoutItem Text="Esporta Tutto in JSON" Click="EsportaTutto_Json_Click"/>
+                        <MenuFlyoutItem Text="Esporta Tutto in XML" Click="EsportaTutto_Xml_Click"/>
+                        <MenuFlyoutItem Text="Esporta Tutto in TXT" Click="EsportaTutto_Txt_Click"/>
+                    </MenuFlyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+        </Grid>
+
+        <!-- 1. CATEGORIE OFFLINE -->
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="Films" Click="BtnCategoriaOffline_Click" Tag="Films" Background="#222222" Foreground="#FFE81F" CornerRadius="8" Padding="16,8"/>
+                <Button Content="Personaggi" Click="BtnCategoriaOffline_Click" Tag="Personaggi" Background="#222222" Foreground="#FFE81F" CornerRadius="8" Padding="16,8"/>
+                <Button Content="Pianeti" Click="BtnCategoriaOffline_Click" Tag="Pianeti" Background="#222222" Foreground="#FFE81F" CornerRadius="8" Padding="16,8"/>
+                <Button Content="Navicelle" Click="BtnCategoriaOffline_Click" Tag="Navicelle" Background="#222222" Foreground="#FFE81F" CornerRadius="8" Padding="16,8"/>
+                <Button Content="Veicoli" Click="BtnCategoriaOffline_Click" Tag="Veicoli" Background="#222222" Foreground="#FFE81F" CornerRadius="8" Padding="16,8"/>
+                <Button Content="Specie" Click="BtnCategoriaOffline_Click" Tag="Specie" Background="#222222" Foreground="#FFE81F" CornerRadius="8" Padding="16,8"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- 2. HEADER CATEGORIA SELEZIONATA + ESPORTAZIONE CATEGORIA -->
+        <Grid Grid.Row="2" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="TxtCategoriaCorrente" Text="Categoria: Films" 
+                       FontSize="20" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center"/>
+
+            <!-- Menu Esporta Categoria -->
+            <DropDownButton Grid.Column="1" Content="Esporta questa Categoria" 
+                            Background="#333333" Foreground="White" CornerRadius="8">
+                <DropDownButton.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedRight">
+                        <MenuFlyoutItem Text="Esporta in JSON" Click="EsportaCategoria_Json_Click"/>
+                        <MenuFlyoutItem Text="Esporta in XML" Click="EsportaCategoria_Xml_Click"/>
+                        <MenuFlyoutItem Text="Esporta in TXT" Click="EsportaCategoria_Txt_Click"/>
+                    </MenuFlyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+        </Grid>
+
+        <!-- 3. LISTA DATI SALVATI -->
+        <ListView x:Name="LstDatiOffline" Grid.Row="3" Background="#1A1A1A" CornerRadius="8" Padding="12"/>
+
+    </Grid>
+</Page>
